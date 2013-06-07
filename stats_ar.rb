@@ -13,18 +13,40 @@ end
 
 class ProcessInstance < ActiveRecord::Base
   self.table_name = "JBPM_PROCESSINSTANCE"
-
-  def get_open_jobs
-    ProcessInstance.where( "END_ is null and PROCESSDEFINITION_ > 10" )
-  end
 end
 
 class JobInfo < ActiveRecord::Base
   self.table_name = "JBPM_VARIABLEINSTANCE"
+end
 
-  def get_job_info( job_num )
-    JobInfo.where( "PROCESSINSTANCE_ = ?", job_num )
+##########################
+
+def get_all_jobs_hash
+  something = Hash.new
+  ProcessInstance.all.each do |process|
+    something[ process.ID_ ] = process.attributes
+    # all_jobs_hash[ process.ID_.to_s ] => process.attributes
   end
+  something
+end
+
+all_jobs = get_all_jobs_hash
+# p all_jobs.first
+p all_jobs[ 6252 ]
+
+current_jobs = 0
+all_jobs.each { |key, value| current_jobs += 1 if value[ "END_" ] == nil && value[ "PROCESSDEFINITION_" ] > 10 }
+p current_jobs
+
+# p all_jobs
+# p all_jobs.count
+
+def get_open_jobs
+  ProcessInstance.where( "END_ is null and PROCESSDEFINITION_ > 10" )
+end
+
+def get_job_info( job_num )
+  JobInfo.where( "PROCESSINSTANCE_ = ?", job_num )
 end
 
 def get_job_info_hash( job_info )
@@ -33,20 +55,34 @@ def get_job_info_hash( job_info )
   p job_info_hash
 end
 
-
-jobs = ProcessInstance.new
-job_info = JobInfo.new
-
-open_jobs = jobs.get_open_jobs()
-puts open_jobs.count
-
-open_jobs.each do |job|
-  a_job = job_info.get_job_info( job.ID_ )
-  a_job_hash = {}
-  a_job.each { |job| a_job_hash[ job.NAME_ ] = job.STRINGVALUE_ }
-  p a_job_hash[ "electronic_bib_id" ]
-  p a_job_hash[ "title" ]
+def get_all_tasks
+  Task.all
 end
+
+def get_job_tasks( job_num )
+  Task.where( "PROCINST_ = ?", job_num )
+end
+
+
+# jobs = ProcessInstance.new
+# job_info = JobInfo.new
+
+# open_jobs = get_open_jobs()
+# puts open_jobs.count
+
+# open_jobs.each do |job|
+#   p "#{ job.ID_ } has #{ get_job_tasks( job ).count }"
+#   # p "#{job.ID_} latest status is #{get_job_tasks( job ).each { |task| max task.START_ }}"
+# end
+
+
+# open_jobs.each do |job|
+#   a_job = job_info.get_job_info( job.ID_ )
+#   a_job_hash = {}
+#   a_job.each { |job| a_job_hash[ job.NAME_ ] = job.STRINGVALUE_ }
+#   p a_job_hash[ "electronic_bib_id" ]
+#   p a_job_hash[ "title" ]
+# end
 
 
 
