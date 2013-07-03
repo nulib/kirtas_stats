@@ -1,5 +1,8 @@
 require 'active_record'
 require 'yaml'
+require 'date'
+require 'csv'
+require_relative 'get_projects'
 
 config = YAML::load(
     File.open('config/database.yml'))
@@ -7,89 +10,210 @@ config = YAML::load(
 ActiveRecord::Base.establish_connection(
     config["development"])
 
-class Task < ActiveRecord::Base
-    self.table_name = "JBPM_TASKINSTANCE"
+class Token < ActiveRecord::Base
+	self.table_name = "JBPM_TOKEN"
 end
 
-class ProcessInstance < ActiveRecord::Base
-  self.table_name = "JBPM_PROCESSINSTANCE"
+class Node < ActiveRecord::Base
+	self.table_name = "JBPM_NODE"
 end
 
 class JobInfo < ActiveRecord::Base
-  self.table_name = "JBPM_VARIABLEINSTANCE"
+	self.table_name = "JBPM_VARIABLEINSTANCE"
 end
 
 ##########################
 
-def get_all_jobs_hash
-  something = Hash.new
-  ProcessInstance.all.each do |process|
-    something[ process.ID_ ] = process.attributes
-    # all_jobs_hash[ process.ID_.to_s ] => process.attributes
-  end
-  something
+
+class KirtasStats
+	include ProjectList
+
+	attr_accessor :fiscal_start, :fiscal_end, :period_start, :period_end
+
+	def initialize( project = nil, change_fiscal_or_period = true )
+
+		@project = project
+
+		@BASE_SQL = "
+			SELECT t.ID_
+			FROM JBPM_TOKEN t
+			LEFT JOIN JBPM_NODE n
+			ON t.NODE_ = n.ID_
+			LEFT JOIN JBPM_VARIABLEINSTANCE v
+			ON t.ID_ = v.PROCESSINSTANCE_
+			WHERE v.NAME_ = 'projects'"
+		
+		@PROJECT_SQL = project.nil? ? "" : "
+			and FIND_IN_SET( '#{project}', v.STRINGVALUE_ )"
+		
+		@SELECT_STATUSES = [
+			"Scan",
+			"Select File Move Destination",
+			"Batch",
+			"Touchup",
+			"Quality Control",
+			"Move to precopy node",
+			"MoveProcessingFiles",
+			"MoveFilesToArchival",
+			"MoveFoldoutsToArchival",
+			"Standard Pages Ingest Script",
+			"Book Builder",
+			"Associate rescans",
+			"Confirm Foldouts Done",
+			"Import Foldouts",
+			"Foldout Ingest Script",
+			"Approve",
+			"PDF Generation Script" ]
+		
+		@fiscal_start = @fiscal_end = nil
+		@period_start = @period_end = nil
+		
+		get_fiscal_start_end if change_fiscal_or_period
+		get_period_start_end if change_fiscal_or_period
+	end
+
+	def get_fiscal_start_end
+		self.fiscal_start = Date.parse( "2012-09-01" ).strftime( "%Y-%m-%d" )
+		self.fiscal_end = Date.parse( "2013-08-31" ).strftime( "%Y-%m-%d" )
+
+		puts "The current fiscal year is #{self.fiscal_start} to #{self.fiscal_end}."
+		print "Enter a new fiscal start date (Enter to keep default): "
+		new_fiscal_start = gets.chomp
+		return if new_fiscal_start.empty?
+		print "Enter a new fiscal end date: "
+		new_fiscal_end = gets.chomp
+		self.fiscal_start = Date.parse( new_fiscal_start ).strftime( "%Y-%m-%d" )
+		self.fiscal_end = Date.parse( new_fiscal_end ).strftime( "%Y-%m-%d" )
+	end
+
+	def get_prev_month_start_end
+		prev_month = Date.today.prev_month.month
+		prev_month_year = Date.today.prev_month.year
+		prev_month_start = Date.new( prev_month_year, prev_month, 1 ).strftime( "%Y-%m-%d" )
+		prev_month_end = Date.new( prev_month_year, prev_month, -1 ).strftime( "%Y-%m-%d" )
+		return prev_month_start, prev_month_end
+	end
+
+	def get_period_start_end
+		self.period_start = get_prev_month_start_end.first
+		self.period_end = get_prev_month_start_end.last
+
+		puts "The current period is #{self.period_start} to #{self.period_end}."
+		print "Enter a new period start date (Enter to keep default): "
+		new_period_start = gets.chomp
+		return if new_period_start.empty?
+		print "Enter a new period end date: "
+		new_period_end = gets.chomp
+		self.period_start = Date.parse( new_period_start ).strftime( "%Y-%m-%d" )
+		self.period_end = Date.parse( new_period_end ).strftime( "%Y-%m-%d" )
+	end
+	
+	def status_stats_this_period( arr )
+		status_stats = {}
+		arr.each do |status|
+			status_sql = "
+				and n.NAME_ = '#{status}'
+				and t.START_ between '#{self.fiscal_start}' and '#{self.period_end}'
+				and t.END_ is NULL
+				and t.NODEENTER_ >= '#{self.fiscal_start}'"
+			sql = @BASE_SQL + status_sql + @PROJECT_SQL
+			# puts sql
+			status_stats[ status ] = Token.find_by_sql( sql )
+		end
+		return status_stats
+	end
+	
+	def jobs_killed_this_period
+		jobs_killed_monthly_sql = "
+			and n.NAME_ != 'Book Done'
+			and t.END_ is not NULL
+			and t.END_ between '#{self.period_start}' and '#{self.period_end}'"
+		Token.find_by_sql( @BASE_SQL + jobs_killed_monthly_sql + @PROJECT_SQL )
+	end
+	
+	def jobs_approved_this_period
+		jobs_approved_monthly_sql = "
+			and n.NAME_ = 'Approve'
+			and t.START_ >= '#{self.fiscal_start}'
+			and t.NODEENTER_ between '#{self.period_start}' and '#{self.period_end}'"
+		Token.find_by_sql( @BASE_SQL + jobs_approved_monthly_sql + @PROJECT_SQL )
+	end
+	
+	def jobs_created_this_fiscal_year
+		jobs_created_sql = "
+			and t.START_ between '#{self.fiscal_start}' and '#{self.period_end}'"
+		p self.fiscal_start
+		p self.fiscal_end
+		p self.period_start
+		p self.period_end
+		Token.find_by_sql( @BASE_SQL + jobs_created_sql + @PROJECT_SQL )
+	end
+	
+	def books_done_this_period
+		books_done_yearly_sql = "
+			and n.NAME_ = 'Book Done'
+			and t.END_ between '#{self.period_start}' and '#{self.period_end}'"
+		sql = @BASE_SQL + books_done_yearly_sql + @PROJECT_SQL
+		# puts sql
+		Token.find_by_sql( sql )
+	end
+	
+	def jobs_active_this_fiscal_year
+		jobs_active_sql = "
+			and t.END_ is NULL
+			and t.NODE_ > 351
+			and t.START_ between '#{fiscal_start}' and '#{self.period_end}'"
+		Token.find_by_sql( @BASE_SQL + jobs_active_sql + @PROJECT_SQL )
+	end
+
+	def display_stats
+		puts ""
+		p self.period_start
+		p self.period_end
+		puts "Fiscal year:".ljust( 25, '. ' ) + "#{self.fiscal_start} - #{self.fiscal_end}"
+		puts "Period:".ljust( 25, '. ' ) + "#{self.period_start} - #{self.period_end}"
+		puts ""
+		puts "jobs_created_this_fiscal_year:".ljust( 50, '. ' ) + "#{jobs_created_this_fiscal_year.size}"
+		puts "jobs_active_this_fiscal_year:".ljust( 50, '. ' ) + "#{jobs_active_this_fiscal_year.size}"
+		puts "books_done_this_period:".ljust( 50, '. ' ) + "#{books_done_this_period.size}"
+		puts "jobs_killed_this_period:".ljust( 50, '. ' ) + "#{jobs_killed_this_period.size}"
+		puts "\nJobs currently at ..."
+		status_stats_this_period( @SELECT_STATUSES ).each do |key, value|
+			puts "#{key}".ljust( 50, '. ' ) + "#{value.size}"
+		end
+	end
+
+	def print_stats_to_csv
+		CSV.open( "stats.csv", "ab" ) do |csv|
+			csv << [ "Collection", ProjectList::project_index_to_name( @project ) ]
+			csv << [ "Fiscal year", "#{fiscal_start}", "#{self.fiscal_end}" ]
+			csv << [ "Period","#{self.period_start}","#{self.period_end}" ]
+			csv << [ "jobs_created_this_fiscal_year","#{jobs_created_this_fiscal_year.size}" ]
+			csv << [ "jobs_active_this_fiscal_year","#{jobs_active_this_fiscal_year.size}" ]
+			csv << [ "books_done_this_period","#{books_done_this_period.size}" ]
+			csv << [ "jobs_killed_this_period","#{jobs_killed_this_period.size}" ]
+			status_stats_this_period( @SELECT_STATUSES ).each do |key, value|
+				csv << [ "#{key}" , "#{value.size}" ]
+			end
+		end
+	end
 end
 
-all_jobs = get_all_jobs_hash
-# p all_jobs.first
-p all_jobs[ 6252 ]
+include ProjectList
 
-current_jobs = 0
-all_jobs.each { |key, value| current_jobs += 1 if value[ "END_" ] == nil && value[ "PROCESSDEFINITION_" ] > 10 }
-p current_jobs
+stats = KirtasStats.new
+puts ""
+puts ProjectList::project_index_to_name
+puts "*" * 50
+stats.display_stats
+stats.print_stats_to_csv
 
-# p all_jobs
-# p all_jobs.count
-
-def get_open_jobs
-  ProcessInstance.where( "END_ is null and PROCESSDEFINITION_ > 10" )
-end
-
-def get_job_info( job_num )
-  JobInfo.where( "PROCESSINSTANCE_ = ?", job_num )
-end
-
-def get_job_info_hash( job_info )
-  job_info_hash = {}
-  job_info.each { |job| job_info_hash = { job.STRINGVALUE_ => job.NAME_ } }
-  p job_info_hash
-end
-
-def get_all_tasks
-  Task.all
-end
-
-def get_job_tasks( job_num )
-  Task.where( "PROCINST_ = ?", job_num )
-end
-
-
-# jobs = ProcessInstance.new
-# job_info = JobInfo.new
-
-# open_jobs = get_open_jobs()
-# puts open_jobs.count
-
-# open_jobs.each do |job|
-#   p "#{ job.ID_ } has #{ get_job_tasks( job ).count }"
-#   # p "#{job.ID_} latest status is #{get_job_tasks( job ).each { |task| max task.START_ }}"
+# project_list_hash = ProjectList::get_projects
+# project_list_hash.each do |key, value|
+# 	project_stats = KirtasStats.new( key, false )
+# 	puts ""
+# 	puts ProjectList::project_index_to_name( key )
+# 	puts "*" * 50
+# 	project_stats.display_stats
+# 	project_stats.print_stats_to_csv
 # end
-
-
-# open_jobs.each do |job|
-#   a_job = job_info.get_job_info( job.ID_ )
-#   a_job_hash = {}
-#   a_job.each { |job| a_job_hash[ job.NAME_ ] = job.STRINGVALUE_ }
-#   p a_job_hash[ "electronic_bib_id" ]
-#   p a_job_hash[ "title" ]
-# end
-
-
-
-# open_jobs.each do |job|
-#   job_num = job.ID_
-#   # job_title = job_info.get_job_info( job_num )
-#   # job_info.get_job_info( job_num ).each { |info| p job_num.to_s + " - " + info.STRINGVALUE_ if info.NAME_ == "title" }
-#   p get_job_info_hash( get_job_info( job_num ) )
-# end
-# p job_info.get_job_info( open_jobs.first.ID_ ).last.NAME_
