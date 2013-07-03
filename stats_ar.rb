@@ -28,7 +28,8 @@ end
 class KirtasStats
 	include ProjectList
 
-	attr_accessor :fiscal_start, :fiscal_end, :period_start, :period_end
+	@@fiscal_start = @@fiscal_end = nil
+	@@period_start = @@period_end = nil
 
 	def initialize( project = nil, change_fiscal_or_period = true )
 
@@ -65,25 +66,22 @@ class KirtasStats
 			"Approve",
 			"PDF Generation Script" ]
 		
-		@fiscal_start = @fiscal_end = nil
-		@period_start = @period_end = nil
-		
-		get_fiscal_start_end if change_fiscal_or_period
-		get_period_start_end if change_fiscal_or_period
+		get_fiscal_start_end unless @@fiscal_start && @@fiscal_end
+		get_period_start_end unless @@period_start && @@period_end
 	end
 
 	def get_fiscal_start_end
-		self.fiscal_start = Date.parse( "2012-09-01" ).strftime( "%Y-%m-%d" )
-		self.fiscal_end = Date.parse( "2013-08-31" ).strftime( "%Y-%m-%d" )
+		@@fiscal_start = Date.parse( "2012-09-01" ).strftime( "%Y-%m-%d" )
+		@@fiscal_end = Date.parse( "2013-08-31" ).strftime( "%Y-%m-%d" )
 
-		puts "The current fiscal year is #{self.fiscal_start} to #{self.fiscal_end}."
+		puts "The current fiscal year is #{@@fiscal_start} to #{@@fiscal_end}."
 		print "Enter a new fiscal start date (Enter to keep default): "
 		new_fiscal_start = gets.chomp
 		return if new_fiscal_start.empty?
 		print "Enter a new fiscal end date: "
 		new_fiscal_end = gets.chomp
-		self.fiscal_start = Date.parse( new_fiscal_start ).strftime( "%Y-%m-%d" )
-		self.fiscal_end = Date.parse( new_fiscal_end ).strftime( "%Y-%m-%d" )
+		@@fiscal_start = Date.parse( new_fiscal_start ).strftime( "%Y-%m-%d" )
+		@@fiscal_end = Date.parse( new_fiscal_end ).strftime( "%Y-%m-%d" )
 	end
 
 	def get_prev_month_start_end
@@ -95,17 +93,17 @@ class KirtasStats
 	end
 
 	def get_period_start_end
-		self.period_start = get_prev_month_start_end.first
-		self.period_end = get_prev_month_start_end.last
+		@@period_start = get_prev_month_start_end.first
+		@@period_end = get_prev_month_start_end.last
 
-		puts "The current period is #{self.period_start} to #{self.period_end}."
+		puts "The current period is #{@@period_start} to #{@@period_end}."
 		print "Enter a new period start date (Enter to keep default): "
 		new_period_start = gets.chomp
 		return if new_period_start.empty?
 		print "Enter a new period end date: "
 		new_period_end = gets.chomp
-		self.period_start = Date.parse( new_period_start ).strftime( "%Y-%m-%d" )
-		self.period_end = Date.parse( new_period_end ).strftime( "%Y-%m-%d" )
+		@@period_start = Date.parse( new_period_start ).strftime( "%Y-%m-%d" )
+		@@period_end = Date.parse( new_period_end ).strftime( "%Y-%m-%d" )
 	end
 	
 	def status_stats_this_period( arr )
@@ -113,9 +111,9 @@ class KirtasStats
 		arr.each do |status|
 			status_sql = "
 				and n.NAME_ = '#{status}'
-				and t.START_ between '#{self.fiscal_start}' and '#{self.period_end}'
+				and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'
 				and t.END_ is NULL
-				and t.NODEENTER_ >= '#{self.fiscal_start}'"
+				and t.NODEENTER_ >= '#{@@fiscal_start}'"
 			sql = @BASE_SQL + status_sql + @PROJECT_SQL
 			# puts sql
 			status_stats[ status ] = Token.find_by_sql( sql )
@@ -127,32 +125,32 @@ class KirtasStats
 		jobs_killed_monthly_sql = "
 			and n.NAME_ != 'Book Done'
 			and t.END_ is not NULL
-			and t.END_ between '#{self.period_start}' and '#{self.period_end}'"
+			and t.END_ between '#{@@period_start}' and '#{@@period_end}'"
 		Token.find_by_sql( @BASE_SQL + jobs_killed_monthly_sql + @PROJECT_SQL )
 	end
 	
 	def jobs_approved_this_period
 		jobs_approved_monthly_sql = "
 			and n.NAME_ = 'Approve'
-			and t.START_ >= '#{self.fiscal_start}'
-			and t.NODEENTER_ between '#{self.period_start}' and '#{self.period_end}'"
+			and t.START_ >= '#{@@fiscal_start}'
+			and t.NODEENTER_ between '#{@@period_start}' and '#{@@period_end}'"
 		Token.find_by_sql( @BASE_SQL + jobs_approved_monthly_sql + @PROJECT_SQL )
 	end
 	
 	def jobs_created_this_fiscal_year
 		jobs_created_sql = "
-			and t.START_ between '#{self.fiscal_start}' and '#{self.period_end}'"
-		p self.fiscal_start
-		p self.fiscal_end
-		p self.period_start
-		p self.period_end
+			and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'"
+		p @@fiscal_start
+		p @@fiscal_end
+		p @@period_start
+		p @@period_end
 		Token.find_by_sql( @BASE_SQL + jobs_created_sql + @PROJECT_SQL )
 	end
 	
 	def books_done_this_period
 		books_done_yearly_sql = "
 			and n.NAME_ = 'Book Done'
-			and t.END_ between '#{self.period_start}' and '#{self.period_end}'"
+			and t.END_ between '#{@@period_start}' and '#{@@period_end}'"
 		sql = @BASE_SQL + books_done_yearly_sql + @PROJECT_SQL
 		# puts sql
 		Token.find_by_sql( sql )
@@ -162,16 +160,16 @@ class KirtasStats
 		jobs_active_sql = "
 			and t.END_ is NULL
 			and t.NODE_ > 351
-			and t.START_ between '#{fiscal_start}' and '#{self.period_end}'"
+			and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'"
 		Token.find_by_sql( @BASE_SQL + jobs_active_sql + @PROJECT_SQL )
 	end
 
 	def display_stats
 		puts ""
-		p self.period_start
-		p self.period_end
-		puts "Fiscal year:".ljust( 25, '. ' ) + "#{self.fiscal_start} - #{self.fiscal_end}"
-		puts "Period:".ljust( 25, '. ' ) + "#{self.period_start} - #{self.period_end}"
+		p @@period_start
+		p @@period_end
+		puts "Fiscal year:".ljust( 25, '. ' ) + "#{@@fiscal_start} - #{@@fiscal_end}"
+		puts "Period:".ljust( 25, '. ' ) + "#{@@period_start} - #{@@period_end}"
 		puts ""
 		puts "jobs_created_this_fiscal_year:".ljust( 50, '. ' ) + "#{jobs_created_this_fiscal_year.size}"
 		puts "jobs_active_this_fiscal_year:".ljust( 50, '. ' ) + "#{jobs_active_this_fiscal_year.size}"
@@ -186,8 +184,8 @@ class KirtasStats
 	def print_stats_to_csv
 		CSV.open( "stats.csv", "ab" ) do |csv|
 			csv << [ "Collection", ProjectList::project_index_to_name( @project ) ]
-			csv << [ "Fiscal year", "#{fiscal_start}", "#{self.fiscal_end}" ]
-			csv << [ "Period","#{self.period_start}","#{self.period_end}" ]
+			csv << [ "Fiscal year", "#{@@fiscal_start}", "#{@@fiscal_end}" ]
+			csv << [ "Period","#{@@period_start}","#{@@period_end}" ]
 			csv << [ "jobs_created_this_fiscal_year","#{jobs_created_this_fiscal_year.size}" ]
 			csv << [ "jobs_active_this_fiscal_year","#{jobs_active_this_fiscal_year.size}" ]
 			csv << [ "books_done_this_period","#{books_done_this_period.size}" ]
@@ -208,12 +206,12 @@ puts "*" * 50
 stats.display_stats
 stats.print_stats_to_csv
 
-# project_list_hash = ProjectList::get_projects
-# project_list_hash.each do |key, value|
-# 	project_stats = KirtasStats.new( key, false )
-# 	puts ""
-# 	puts ProjectList::project_index_to_name( key )
-# 	puts "*" * 50
-# 	project_stats.display_stats
-# 	project_stats.print_stats_to_csv
-# end
+project_list_hash = ProjectList::get_projects
+project_list_hash.each do |key, value|
+	project_stats = KirtasStats.new( key, false )
+	puts ""
+	puts ProjectList::project_index_to_name( key )
+	puts "*" * 50
+	project_stats.display_stats
+	project_stats.print_stats_to_csv
+end
