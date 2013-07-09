@@ -186,8 +186,8 @@ class KirtasStats
 	def print_stats_to_csv
 		CSV.open( @@CSV_FILE, "ab" ) do |csv|
 			csv << [ "Collection", ProjectList::project_index_to_name( @project ) ]
-			csv << [ "Fiscal year", "#{@@fiscal_start}", "#{@@fiscal_end}" ]
-			csv << [ "Period","#{@@period_start}","#{@@period_end}" ]
+			csv << [ "Fiscal year", "#{@@fiscal_start} - #{@@fiscal_end}" ]
+			csv << [ "Period","#{@@period_start} - #{@@period_end}" ]
 			csv << [ "jobs_created_this_fiscal_year","#{jobs_created_this_fiscal_year.size}" ]
 			csv << [ "jobs_active_this_fiscal_year","#{jobs_active_this_fiscal_year.size}" ]
 			csv << [ "books_done_this_period","#{books_done_this_period.size}" ]
