@@ -31,7 +31,9 @@ class KirtasStats
 	@@fiscal_start = @@fiscal_end = nil
 	@@period_start = @@period_end = nil
 
-	def initialize( project = nil, change_fiscal_or_period = true )
+	@@CSV_FILE = "stats-#{Time.now.strftime( "%Y-%m-%d-%H-%M-%S" )}.csv"
+
+	def initialize( project = nil )
 
 		@project = project
 
@@ -140,10 +142,10 @@ class KirtasStats
 	def jobs_created_this_fiscal_year
 		jobs_created_sql = "
 			and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'"
-		p @@fiscal_start
-		p @@fiscal_end
-		p @@period_start
-		p @@period_end
+		# p @@fiscal_start
+		# p @@fiscal_end
+		# p @@period_start
+		# p @@period_end
 		Token.find_by_sql( @BASE_SQL + jobs_created_sql + @PROJECT_SQL )
 	end
 	
@@ -166,8 +168,8 @@ class KirtasStats
 
 	def display_stats
 		puts ""
-		p @@period_start
-		p @@period_end
+		# p @@period_start
+		# p @@period_end
 		puts "Fiscal year:".ljust( 25, '. ' ) + "#{@@fiscal_start} - #{@@fiscal_end}"
 		puts "Period:".ljust( 25, '. ' ) + "#{@@period_start} - #{@@period_end}"
 		puts ""
@@ -182,7 +184,7 @@ class KirtasStats
 	end
 
 	def print_stats_to_csv
-		CSV.open( "stats.csv", "ab" ) do |csv|
+		CSV.open( @@CSV_FILE, "ab" ) do |csv|
 			csv << [ "Collection", ProjectList::project_index_to_name( @project ) ]
 			csv << [ "Fiscal year", "#{@@fiscal_start}", "#{@@fiscal_end}" ]
 			csv << [ "Period","#{@@period_start}","#{@@period_end}" ]
@@ -208,7 +210,7 @@ stats.print_stats_to_csv
 
 project_list_hash = ProjectList::get_projects
 project_list_hash.each do |key, value|
-	project_stats = KirtasStats.new( key, false )
+	project_stats = KirtasStats.new( key )
 	puts ""
 	puts ProjectList::project_index_to_name( key )
 	puts "*" * 50
