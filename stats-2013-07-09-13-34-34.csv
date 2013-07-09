@@ -1,0 +1,432 @@
+Collection,All Books
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,1688
+jobs_active_this_fiscal_year,555
+books_done_this_period,62
+jobs_killed_this_period,24
+Scan,6
+Select File Move Destination,1
+Batch,3
+Touchup,19
+Quality Control,1
+Move to precopy node,0
+MoveProcessingFiles,2
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,3
+Book Builder,105
+Associate rescans,1
+Confirm Foldouts Done,2
+Import Foldouts,2
+Foldout Ingest Script,5
+Approve,403
+PDF Generation Script,2
+Collection,Collection
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,3
+jobs_active_this_fiscal_year,1
+books_done_this_period,0
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,1
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,0
+PDF Generation Script,0
+Collection,Patron
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,32
+jobs_active_this_fiscal_year,2
+books_done_this_period,1
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,1
+PDF Generation Script,1
+Collection,Brittle
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,225
+jobs_active_this_fiscal_year,111
+books_done_this_period,0
+jobs_killed_this_period,0
+Scan,1
+Select File Move Destination,1
+Batch,3
+Touchup,1
+Quality Control,1
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,9
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,1
+Approve,93
+PDF Generation Script,1
+Collection,Foldouts
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,6
+jobs_active_this_fiscal_year,4
+books_done_this_period,2
+jobs_killed_this_period,2
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,1
+Foldout Ingest Script,1
+Approve,2
+PDF Generation Script,0
+Collection,Trans Center
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,20
+jobs_active_this_fiscal_year,0
+books_done_this_period,0
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,0
+PDF Generation Script,0
+Collection,Rescan
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,3
+jobs_active_this_fiscal_year,2
+books_done_this_period,0
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,1
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,1
+Foldout Ingest Script,0
+Approve,0
+PDF Generation Script,0
+Collection,NU Law
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,0
+jobs_active_this_fiscal_year,0
+books_done_this_period,0
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,0
+PDF Generation Script,0
+Collection,Problem
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,38
+jobs_active_this_fiscal_year,24
+books_done_this_period,3
+jobs_killed_this_period,7
+Scan,1
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,1
+Book Builder,2
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,1
+Foldout Ingest Script,1
+Approve,18
+PDF Generation Script,0
+Collection,Schulze
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,511
+jobs_active_this_fiscal_year,0
+books_done_this_period,0
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,0
+PDF Generation Script,0
+Collection,Ad Hoc Requests
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,19
+jobs_active_this_fiscal_year,6
+books_done_this_period,1
+jobs_killed_this_period,3
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,6
+PDF Generation Script,0
+Collection,Copyright Problems
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,50
+jobs_active_this_fiscal_year,49
+books_done_this_period,0
+jobs_killed_this_period,1
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,49
+PDF Generation Script,0
+Collection,Spanish Plays
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,154
+jobs_active_this_fiscal_year,45
+books_done_this_period,0
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,45
+PDF Generation Script,0
+Collection,WPA
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,207
+jobs_active_this_fiscal_year,14
+books_done_this_period,2
+jobs_killed_this_period,2
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,14
+PDF Generation Script,0
+Collection,HUD
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,29
+jobs_active_this_fiscal_year,11
+books_done_this_period,56
+jobs_killed_this_period,8
+Scan,1
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,4
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,1
+Foldout Ingest Script,3
+Approve,2
+PDF Generation Script,0
+Collection,Siege
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,501
+jobs_active_this_fiscal_year,363
+books_done_this_period,0
+jobs_killed_this_period,11
+Scan,4
+Select File Move Destination,0
+Batch,0
+Touchup,18
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,2
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,3
+Book Builder,90
+Associate rescans,1
+Confirm Foldouts Done,2
+Import Foldouts,1
+Foldout Ingest Script,1
+Approve,241
+PDF Generation Script,0
+Collection,Trans
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,6
+jobs_active_this_fiscal_year,1
+books_done_this_period,2
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,1
+PDF Generation Script,0
+Collection,Big Books
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,0
+jobs_active_this_fiscal_year,0
+books_done_this_period,0
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,0
+PDF Generation Script,0
