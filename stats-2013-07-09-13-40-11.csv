@@ -1,0 +1,24 @@
+Collection,All Books
+Fiscal year,2012-09-01,2013-08-31
+Period,2013-06-01,2013-06-30
+jobs_created_this_fiscal_year,1688
+jobs_active_this_fiscal_year,555
+books_done_this_period,62
+jobs_killed_this_period,24
+Scan,6
+Select File Move Destination,1
+Batch,3
+Touchup,19
+Quality Control,1
+Move to precopy node,0
+MoveProcessingFiles,2
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,3
+Book Builder,105
+Associate rescans,1
+Confirm Foldouts Done,2
+Import Foldouts,2
+Foldout Ingest Script,5
+Approve,403
+PDF Generation Script,2

@@ -1,8 +1,8 @@
 require 'active_record'
 require 'yaml'
-require 'date'
 require 'csv'
 require_relative 'get_projects'
+require_relative 'get_dates'
 
 # Database configuration loaded from file
 config = YAML::load(
@@ -30,11 +30,14 @@ end
 # The KirtasStats class gathers statistics by querying a MySQL database
 class KirtasStats
   include ProjectList
+  include GetDates
+
 
   # @@fiscal_start and @@fiscal_end are class variables
   # The class can be used for all books or books from a specific project
   # Using class vars means we can ask the user to set the dates once
   # and use the same date across multiple instances (an instance per project)
+
   @@fiscal_start = @@fiscal_end = nil
   @@period_start = @@period_end = nil
 
@@ -75,53 +78,15 @@ class KirtasStats
       "Approve",
       "PDF Generation Script" ]
     
-    get_fiscal_start_end unless @@fiscal_start && @@fiscal_end
-    get_period_start_end unless @@period_start && @@period_end
-  end
+    unless @@fiscal_start && @@fiscal_end
+      @@fiscal_start, @@fiscal_end = GetDates::fiscal_start_end
+    end
 
-
-  # Set the default fiscal year to fiscal 2013, then allow the user to change the default
-  # If the user hits <Enter> without changing the start date the default is used
-  def get_fiscal_start_end
-    @@fiscal_start = Date.parse( "2012-09-01" ).strftime( "%Y-%m-%d" )
-    @@fiscal_end = Date.parse( "2013-08-31" ).strftime( "%Y-%m-%d" )
-
-    puts "The current fiscal year is #{@@fiscal_start} to #{@@fiscal_end}."
-    print "Enter a new fiscal start date (Enter to keep default): "
-    new_fiscal_start = gets.chomp
-    return if new_fiscal_start.empty?
-    print "Enter a new fiscal end date: "
-    new_fiscal_end = gets.chomp
-    @@fiscal_start = Date.parse( new_fiscal_start ).strftime( "%Y-%m-%d" )
-    @@fiscal_end = Date.parse( new_fiscal_end ).strftime( "%Y-%m-%d" )
-  end
-
-  # Get the first and last day of the previous month
-  def get_prev_month_start_end
-    prev_month = Date.today.prev_month.month
-    prev_month_year = Date.today.prev_month.year
-    prev_month_start = Date.new( prev_month_year, prev_month, 1 ).strftime( "%Y-%m-%d" )
-    prev_month_end = Date.new( prev_month_year, prev_month, -1 ).strftime( "%Y-%m-%d" )
-    return prev_month_start, prev_month_end
-  end
-
-  # Set the default period to the previous month, then allow the user to change the default
-  # If the user hits <Enter> without changing the start date the default is used  
-  def get_period_start_end
-    @@period_start = get_prev_month_start_end.first
-    @@period_end = get_prev_month_start_end.last
-
-    puts "The current period is #{@@period_start} to #{@@period_end}."
-    print "Enter a new period start date (Enter to keep default): "
-    new_period_start = gets.chomp
-    return if new_period_start.empty?
-    print "Enter a new period end date: "
-    new_period_end = gets.chomp
-    @@period_start = Date.parse( new_period_start ).strftime( "%Y-%m-%d" )
-    @@period_end = Date.parse( new_period_end ).strftime( "%Y-%m-%d" )
+    unless @@period_start && @@period_end
+      @@period_start, @@period_end = GetDates::period_start_end
+    end
   end
   
-  # Iterate through each status in arr and get the number of titles associated with each
   def status_stats_this_period( arr )
     status_stats = {}
     arr.each do |status|
