@@ -1,0 +1,24 @@
+Collection,All Books
+Fiscal year, - 
+Period, - 
+jobs_created_this_fiscal_year,0
+jobs_active_this_fiscal_year,0
+books_done_this_period,0
+jobs_killed_this_period,0
+Scan,0
+Select File Move Destination,0
+Batch,0
+Touchup,0
+Quality Control,0
+Move to precopy node,0
+MoveProcessingFiles,0
+MoveFilesToArchival,0
+MoveFoldoutsToArchival,0
+Standard Pages Ingest Script,0
+Book Builder,0
+Associate rescans,0
+Confirm Foldouts Done,0
+Import Foldouts,0
+Foldout Ingest Script,0
+Approve,0
+PDF Generation Script,0
