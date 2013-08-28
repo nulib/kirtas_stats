@@ -1,4 +1,4 @@
-require 'active_record'
+  require 'active_record'
 require 'yaml'
 require 'csv'
 require_relative 'get_projects'
@@ -123,6 +123,7 @@ class KirtasStats
   def jobs_created_this_fiscal_year
     jobs_created_sql = "
       and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'"
+    query = @BASE_SQL + jobs_created_sql + @PROJECT_SQL
     Token.find_by_sql( @BASE_SQL + jobs_created_sql + @PROJECT_SQL )
   end
   
