@@ -1,2 +1,4 @@
 config/
+csv_output/*
+sql_input/*
 *.csv

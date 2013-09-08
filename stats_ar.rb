@@ -41,7 +41,7 @@ class KirtasStats
   @@fiscal_start = @@fiscal_end = nil
   @@period_start = @@period_end = nil
 
-  @@CSV_FILE = "stats-#{Time.now.strftime( "%Y-%m-%d-%H-%M-%S" )}.csv"
+  @@CSV_FILE = "csv_output/stats-#{Time.now.strftime( "%Y-%m-%d-%H-%M-%S" )}.csv"
 
   def initialize( project = nil )
 
