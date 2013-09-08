@@ -92,9 +92,7 @@ class KirtasStats
     arr.each do |status|
       status_sql = "
         and n.NAME_ = '#{status}'
-        and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'
-        and t.END_ is NULL
-        and t.NODEENTER_ >= '#{@@fiscal_start}'"
+        and t.END_ is NULL"
       sql = @BASE_SQL + status_sql + @PROJECT_SQL
       status_stats[ status ] = Token.find_by_sql( sql )
     end
@@ -141,7 +139,7 @@ class KirtasStats
     jobs_active_sql = "
       and t.END_ is NULL
       and t.NODE_ > 351
-      and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'"
+      and t.NODEENTER_ between '#{@@fiscal_start}' and '#{@@period_end}'"
     Token.find_by_sql( @BASE_SQL + jobs_active_sql + @PROJECT_SQL )
   end
 
