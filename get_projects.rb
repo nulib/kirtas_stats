@@ -14,6 +14,7 @@ module ProjectList
     projects_hash[ 'root' ].each do |el|
       projects[ el[ "PROJECT_ID" ] ] = el[ "PROJECT_NAME" ]
     end
+    
     return projects
   end
 
