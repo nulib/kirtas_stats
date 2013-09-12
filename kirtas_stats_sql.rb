@@ -77,6 +77,8 @@ and FIND_IN_SET( '#{project}', v.STRINGVALUE_ )"
   end
 
   # Find the jobs sent to 'Book Done' during the specified period
+  # Book start: anytime
+  # Book approve: monthly
   def books_done_this_period
     books_done_this_period_sql = "
 and n.NAME_ = 'Book Done'
@@ -85,6 +87,7 @@ and t.END_ between '#{@@period_start}' and '#{@@period_end}'"
   end
   
   # Find the jobs created between the beginning of the fiscal year and the end of the specified period
+  # Job start: this month
   def jobs_created_this_fiscal_year
     jobs_created_sql = "
 and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'"
@@ -92,6 +95,8 @@ and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'"
   end
   
   # Find the number of jobs sent to the 'Approve' stage (complete but awaiting copyright review)
+  # Job start: this year
+  # Job to approve: current period
   def jobs_approved_this_period
     jobs_approved_this_period_sql = "
 and n.NAME_ = 'Approve'
@@ -101,6 +106,8 @@ and t.NODEENTER_ between '#{@@period_start}' and '#{@@period_end}'"
   end
 
   # Find the jobs that were created this fiscal year and are active at the end of the specified period
+  # Job start: this year
+  # Job end: null
   def jobs_active_this_fiscal_year
     jobs_active_sql = "
 and t.END_ is NULL
@@ -110,6 +117,8 @@ and t.NODEENTER_ between '#{@@fiscal_start}' and '#{@@period_end}'"
   end
 
   # Find the number of jobs that ended but were not at 'Book Done' (killed)
+  # Job start: anytime
+  # Killed: this period
   def jobs_killed_this_period
     jobs_killed_this_period_sql = "
 and n.NAME_ != 'Book Done'
