@@ -1,5 +1,1 @@
-config/
-csv_output/*
-sql_input/*
-sql_output/*
 *.csv

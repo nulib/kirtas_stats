@@ -21,11 +21,11 @@ outfile = "sql_output/sql-#{stats_sql.run_time}.out"
 config = YAML::load(
     File.open('config/database.yml'))[ "production" ]
 
-`mysql -h #{ config[ "host" ] } -u #{ config[ "user" ] } -p#{ config[ "password" ] } --skip-column-names #{config[ "database" ] } < #{infile} > #{outfile}`
+`mysql -h #{ config[ "host" ] } -u #{ config[ "username" ] } -p#{ config[ "password" ] } --skip-column-names #{config[ "database" ] } < #{infile} > #{outfile}`
 
-daily = stats_sql.run_time.slice( 10 )
+daily = stats_sql.run_time.slice( 0, 10 )
 f = File.readlines( outfile ).each_slice( 2 ).to_a
-h = Hash { |k, v| v = Hash.new }
+h = Hash.new { |k, v| v = Hash.new }
 
 f.each do |pair|
   a, b = pair.first.chomp.split( ',' )
@@ -35,4 +35,3 @@ end
 
 daily_hash = Hash[ daily, h ]
 
-puts daily_hash
