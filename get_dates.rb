@@ -2,18 +2,24 @@ require 'date'
 
 module GetDates
   def self.fiscal_start_end
-    fiscal_start  = Date.parse( "2013-09-01" ).strftime( "%Y-%m-%d" )
-    fiscal_end    = Date.parse( "2014-08-31" ).strftime( "%Y-%m-%d" )
+
+    current = Date.today
+    if current.month >= 9
+        fiscal_start = Date.parse( "#{ current.year }-09-01" ).strftime( "%Y-%m-%d" )
+        fiscal_end   = Date.parse( "#{ current.next_year.year }-08-31" ).strftime( "%Y-%m-%d" )
+    else
+        fiscal_start = Date.parse( "#{ current.prev_year.year }-09-01" ).strftime( "%Y-%m-%d" )
+        fiscal_end   = Date.parse( "#{ current.year }-08-31" )
+    end
 
     puts "The current fiscal year is #{fiscal_start} to #{fiscal_end}."
     return fiscal_start, fiscal_end
   end
 
   def self.prev_month_start_end
-    prev_month        = Date.today.prev_month.month
-    prev_month_year   = Date.today.prev_month.year
-    prev_month_start  = Date.new( prev_month_year, prev_month, 1 ).strftime( "%Y-%m-%d" )
-    prev_month_end    = Date.new( prev_month_year, prev_month, -1 ).strftime( "%Y-%m-%d" )
+    prev_month        = Date.today.prev_month
+    prev_month_start  = Date.new( prev_month.year, prev_month.month, 1 ).strftime( "%Y-%m-%d" )
+    prev_month_end    = Date.new( prev_month.year, prev_month.month, -1 ).strftime( "%Y-%m-%d" )
     return prev_month_start, prev_month_end
   end
 
