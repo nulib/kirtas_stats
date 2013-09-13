@@ -17,9 +17,9 @@ module GetDates
   end
 
   def self.period_start_end
-    prev_month        = Date.today.prev_month
-    period_start  = Date.new( prev_month.year, prev_month.month, 1 ).strftime( "%Y-%m-%d" )
-    period_end    = Date.new( prev_month.year, prev_month.month, -1 ).strftime( "%Y-%m-%d" )
+    today         = Date.today
+    period_start  = Date.new( today.year, today.month, 1 ).strftime( "%Y-%m-%d" )
+    period_end    = Date.new( today.year, today.month, -1 ).strftime( "%Y-%m-%d" )
 
     puts "The current period is #{period_start} to #{period_end}."
     return period_start, period_end
