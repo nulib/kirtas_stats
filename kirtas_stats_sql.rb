@@ -112,7 +112,7 @@ and t.NODEENTER_ between '#{@@period_start}' and '#{@@period_end}'"
     jobs_active_sql = "
 and t.END_ is NULL
 and t.NODE_ > 351
-and t.NODEENTER_ between '#{@@fiscal_start}' and '#{@@period_end}'"
+and t.START_ >= '#{@@fiscal_start}'"
     append_to_sql_infile( __method__, jobs_active_sql )
   end
 
