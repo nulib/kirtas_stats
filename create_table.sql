@@ -27,5 +27,6 @@ CREATE TABLE dailies (
   at_foldout_ingest_script  INT UNSIGNED,
   at_approve  INT UNSIGNED,
   at_pdf_generation_script  INT UNSIGNED,
+  PRIMARY KEY ( id ),
   UNIQUE idx_date_project ( daily_date, project )
 );
