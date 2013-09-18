@@ -1,4 +1,4 @@
-CREATE TABLE 'dailies'(
+CREATE TABLE dailies (
   'id' INT UNSIGNED NOT NULL AUTO_INCREMENT,
   'daily_date' date,
   'system_down_time' INT UNSIGNED,
