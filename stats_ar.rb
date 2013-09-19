@@ -46,7 +46,7 @@ daily_hash.each do |daily_key, proj_hash|
       sql_insert_table += ", " + stats_key.to_s
       sql_insert_values += ", " + value.to_s
   end
-  f.puts sql_insert_table + sql_insert_values + ");"
+  f.puts sql_insert_table + sql_insert_values + " ON DUPLICATE KEY UPDATE );"
   end
 end
 
