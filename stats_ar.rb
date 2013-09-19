@@ -18,9 +18,9 @@ infile  = "sql_input/sql-#{stats_sql.run_time}.in"
 outfile = "sql_output/sql-#{stats_sql.run_time}.out"
 
 # Database configuration loaded from file
-config = YAML::load( File.open( 'config/database.yml' ) )[ "repository" ][ "production" ]
+config_repo = YAML::load( File.open( 'config/database.yml' ) )[ "repository" ][ "production" ]
 
-`mysql -h #{ config[ "host" ] } -u #{ config[ "username" ] } -p#{ config[ "password" ] } --skip-column-names #{ config[ "database" ] } < #{ infile } > #{ outfile }`
+`mysql -h #{ config_repo[ "host" ] } -u #{ config_repo[ "username" ] } -p#{ config_repo[ "password" ] } --skip-column-names #{ config_repo[ "database" ] } < #{ infile } > #{ outfile }`
 
 daily = stats_sql.run_time.slice( 0, 10 )
 f = File.readlines( outfile ).each_slice( 2 ).to_a
@@ -52,7 +52,7 @@ end
 
 f.close
 
-config = YAML::load( 
+config_test = YAML::load( 
   File.open( '/config/database.yml' ) )[ "local" ][ "development" ]
 
-`mysql -h #{ config[ "host" ] } -u #{ config[ "username" ] } -p#{ config[ "password" ] } #{ config[ "database" ] } < #{sql_insert_filename}`
+`mysql -h #{ config_test[ "host" ] } -u #{ config_test[ "username" ] } -p#{ config_test[ "password" ] } #{ config_test[ "database" ] } < #{sql_insert_filename}`
