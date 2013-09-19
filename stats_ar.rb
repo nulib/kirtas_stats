@@ -39,7 +39,7 @@ f = File.new( sql_insert_filename, "a+" )
 
 daily_hash.each do |daily_key, proj_hash|
   proj_hash.each do |proj_key, stats_hash|
-    sql_insert_table = "INSERT INTO dailies( daily_date, project"
+    sql_insert_table = "INSERT IGNORE INTO dailies( daily_date, project"
     sql_insert_values = " ) VALUES ( " + daily_key.to_s
     sql_insert_values += ", " + proj_key.to_s
     stats_hash.each do |stats_key, value|
@@ -55,4 +55,4 @@ f.close
 config_test = YAML::load( 
   File.open( 'config/database.yml' ) )[ "local" ][ "development" ]
 
-`mysql -h #{ config_test[ "host" ] } -u #{ config_test[ "username" ] } -p#{ config_test[ "password" ] } #{ config_test[ "database" ] } < #{sql_insert_filename}`
+`mysql -f -h #{ config_test[ "host" ] } -u #{ config_test[ "username" ] } -p#{ config_test[ "password" ] } #{ config_test[ "database" ] } < #{sql_insert_filename}`
