@@ -53,6 +53,6 @@ end
 f.close
 
 config_test = YAML::load( 
-  File.open( '/config/database.yml' ) )[ "local" ][ "development" ]
+  File.open( 'config/database.yml' ) )[ "local" ][ "development" ]
 
 `mysql -h #{ config_test[ "host" ] } -u #{ config_test[ "username" ] } -p#{ config_test[ "password" ] } #{ config_test[ "database" ] } < #{sql_insert_filename}`
