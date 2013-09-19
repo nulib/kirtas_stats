@@ -18,7 +18,7 @@ infile  = "sql_input/sql-#{stats_sql.run_time}.in"
 outfile = "sql_output/sql-#{stats_sql.run_time}.out"
 
 # Database configuration loaded from file
-config = YAML::load( File.open( 'config/database.yml' )[ "repository" ][ "production" ] )
+config = YAML::load( File.open( 'config/database.yml' ) )[ "repository" ][ "production" ]
 
 `mysql -h #{ config[ "host" ] } -u #{ config[ "username" ] } -p#{ config[ "password" ] } --skip-column-names #{ config[ "database" ] } < #{ infile } > #{ outfile }`
 
