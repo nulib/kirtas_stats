@@ -19,9 +19,9 @@ outfile = "sql_output/sql-#{stats_sql.run_time}.out"
 
 # Database configuration loaded from file
 config = YAML::load(
-    File.open('config/database.yml'))[ "production" ]
+    File.open('config/database.yml'))[ "repository" ][ "production" ]
 
-`mysql -h #{ config[ "host" ] } -u #{ config[ "username" ] } -p#{ config[ "password" ] } --skip-column-names #{config[ "database" ] } < #{infile} > #{outfile}`
+`mysql -h #{ config[ "host" ] } -u #{ config[ "username" ] } -p#{ config[ "password" ] } --skip-column-names #{ config[ "database" ] } < #{ infile } > #{ outfile }`
 
 daily = stats_sql.run_time.slice( 0, 10 )
 f = File.readlines( outfile ).each_slice( 2 ).to_a
@@ -34,8 +34,9 @@ f.each do |pair|
 end
 
 daily_hash = Hash[ daily, h ]
+sql_insert_filename = "sql_insert/sql-insert-" + daily + ".sql"
 
-f = File.new( "sql_insert/sql-insert-" + daily + ".sql", "a+" )
+f = File.new( sql_insert_filename, "a+" )
 
 daily_hash.each do |daily_key, proj_hash|
   proj_hash.each do |proj_key, stats_hash|
@@ -51,3 +52,8 @@ daily_hash.each do |daily_key, proj_hash|
 end
 
 f.close
+
+config = YAML::load( 
+  File.open( '/config/database.yml' ) )[ "local" ][ "development" ]
+
+`mysql -h #{ config[ "host" ] } -u #{ config[ "username" ] } -p#{ config[ "password" ] } #{ config[ "database" ] } < #{sql_insert_filename}`
