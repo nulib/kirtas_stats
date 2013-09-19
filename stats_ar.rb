@@ -35,3 +35,19 @@ end
 
 daily_hash = Hash[ daily, h ]
 
+f = File.new( "sql-insert-" + daily, "a+" )
+
+daily_hash.each do |daily_key, proj_hash|
+  proj_hash.each do |proj_key, stats_hash|
+    sql_insert_table = "INSERT INTO dailies( daily_date, project"
+    sql_insert_values = " ) VALUES ( " + daily_key.to_s
+    sql_insert_values += ", " + proj_key.to_s
+    stats_hash.each do |stats_key, value|
+      sql_insert_table += ", " + stats_key.to_s
+      sql_insert_values += ", " + value.to_s
+  end
+  f.puts sql_insert_table + sql_insert_values + ");"
+  end
+end
+
+f.close
