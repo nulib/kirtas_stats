@@ -35,7 +35,7 @@ end
 daily_hash = Hash[ daily, h ]
 sql_insert_filename = "sql_insert/sql-insert-" + daily + ".sql"
 
-f = File.new( sql_insert_filename, "a+" )
+f = File.new( sql_insert_filename, "w" )
 
 daily_hash.each do |daily_key, proj_hash|
   proj_hash.each do |proj_key, stats_hash|
