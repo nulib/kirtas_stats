@@ -2,26 +2,24 @@ require 'date'
 
 module GetDates
 
-  def self.fiscal_start_end
+  def self.yearly_start_end
+    today = Date.today
 
-    current = Date.today
-    if current.month >= 9
-        fiscal_start = Date.parse( "#{ current.year }-09-01" ).strftime( "%Y-%m-%d" )
-        fiscal_end   = Date.parse( "#{ current.next_year.year }-08-31" ).strftime( "%Y-%m-%d" )
+    if today.month < 9
+        fiscal_start = Date.new( today.prev_year.year, 9, 1 )
+        fiscal_end   = Date.new( today.year, 8, -1 )
     else
-        fiscal_start = Date.parse( "#{ current.prev_year.year }-09-01" ).strftime( "%Y-%m-%d" )
-        fiscal_end   = Date.parse( "#{ current.year }-08-31" )
+        fiscal_start = Date.new( today.year, 9, 1 )
+        fiscal_end   = Date.new( today.next_year, 8, -1 )
     end
 
-    puts "The current fiscal year is #{fiscal_start} to #{fiscal_end}."
-    return fiscal_start, fiscal_end
+    return [ fiscal_start, fiscal_end ]
   end
 
   def self.quarterly_start_end
-
     today = Date.today
 
-    if today < Date.new( today.year, 9, 1 ) then
+    if today.month < 9
       q1_start = Date.new( today.prev_year.year, 9, 1 )
       q1_end   = Date.new( today.prev_year.year, 11, -1 )
       q2_start = Date.new( today.prev_year.year, 12, 1 )
@@ -55,17 +53,15 @@ module GetDates
     else
       return [ q4_start, q4_end ]
     end
-
   end
 
+  def self.monthly_start_end
+    today = Date.today
 
-  def self.period_start_end
-    today         = Date.today
-    period_start  = Date.new( today.year, today.month, 1 ).strftime( "%Y-%m-%d" )
-    period_end    = Date.new( today.year, today.month, -1 ).strftime( "%Y-%m-%d" )
+    monthly_start  = Date.new( today.year, today.month, 1 )
+    monthly_end    = Date.new( today.year, today.month, -1 )
 
-    puts "The current period is #{period_start} to #{period_end}."
-    return period_start, period_end
+    return [ monthly_start, monthly_end ]
   end
 
 end
