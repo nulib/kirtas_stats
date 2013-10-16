@@ -6,7 +6,7 @@ class KirtasStatsSQL
   include ProjectList
   include GetDates
 
-  attr_reader :run_time
+  attr_reader :time_of_run
 
 
   # @@fiscal_start and @@fiscal_end are class variables
@@ -17,7 +17,7 @@ class KirtasStatsSQL
   @@fiscal_start = @@fiscal_end = nil
   @@period_start = @@period_end = nil
 
-  @@run_time = Time.now.strftime( "%Y-%m-%d-%H-%M-%S" )
+  @@time_of_run = Time.now.strftime( "%Y-%m-%d-%H-%M-%S" )
 
   
 
@@ -25,8 +25,8 @@ class KirtasStatsSQL
 
     @project = project
 
-    @run_time = @@run_time
-    @filename = "sql_input/sql-#{@run_time}.in"
+    @time_of_run = @@time_of_run
+    @filename = "sql_input/sql-#{@time_of_run}.in"
 
     @BASE_SQL = "
 SELECT count( * )
