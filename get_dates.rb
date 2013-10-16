@@ -10,7 +10,7 @@ module GetDates
         fiscal_end   = Date.new( today.year, 8, -1 )
     else
         fiscal_start = Date.new( today.year, 9, 1 )
-        fiscal_end   = Date.new( today.next_year, 8, -1 )
+        fiscal_end   = Date.new( today.next_year.year, 8, -1 )
     end
 
     return [ fiscal_start, fiscal_end ]
