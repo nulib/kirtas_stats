@@ -14,8 +14,9 @@ class KirtasStatsSQL
   # Using class vars means we can ask the user to set the dates once
   # and use the same date across multiple instances (an instance per project)
 
-  @@fiscal_start = @@fiscal_end = nil
-  @@period_start = @@period_end = nil
+  @@yearly_start    = @@yearly_end    = nil
+  @@quarterly_start = @@quarterly_end = nil
+  @@monthly_start   = @@monthly_end   = nil
 
   @@time_of_run = Time.now.strftime( "%Y-%m-%d-%H-%M-%S" )
 
@@ -59,12 +60,16 @@ and FIND_IN_SET( '#{project}', v.STRINGVALUE_ )"
       "Approve",
       "PDF Generation Script" ]
     
-    unless @@fiscal_start && @@fiscal_end
-      @@fiscal_start, @@fiscal_end = GetDates::yearly_start_end
+    unless @@yearly_start && @@yearly_end
+      @@yearly_start, @@yearly_end = GetDates::yearly_start_end
     end
 
-    unless @@period_start && @@period_end
-      @@period_start, @@period_end = GetDates::monthly_start_end
+    unless @@quarterly_start && @@quarterly_end
+      @@quarterly_start, @@quarterly_end = GetDates::quarterly_start_end
+    end
+
+    unless @@monthly_start && @@monthly_end
+      @@monthly_start, @@monthly_end = GetDates::monthly_start_end
     end
   end
   
@@ -82,7 +87,7 @@ and FIND_IN_SET( '#{project}', v.STRINGVALUE_ )"
   def books_done_this_period
     books_done_this_period_sql = "
 and n.NAME_ = 'Book Done'
-and t.END_ between '#{@@period_start}' and '#{@@period_end}'"
+and t.END_ between '#{@@monthly_start}' and '#{@@monthly_end}'"
     append_to_sql_infile( __method__, books_done_this_period_sql )
   end
   
@@ -90,7 +95,7 @@ and t.END_ between '#{@@period_start}' and '#{@@period_end}'"
   # Job start: this month
   def jobs_created_this_fiscal_year
     jobs_created_sql = "
-and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'"
+and t.START_ between '#{@@yearly_start}' and '#{@@monthly_end}'"
     append_to_sql_infile( __method__, jobs_created_sql )
   end
   
@@ -100,8 +105,8 @@ and t.START_ between '#{@@fiscal_start}' and '#{@@period_end}'"
   def jobs_approved_this_period
     jobs_approved_this_period_sql = "
 and n.NAME_ = 'Approve'
-and t.START_ >= '#{@@fiscal_start}'
-and t.NODEENTER_ between '#{@@period_start}' and '#{@@period_end}'"
+and t.START_ >= '#{@@yearly_start}'
+and t.NODEENTER_ between '#{@@monthly_start}' and '#{@@monthly_end}'"
     append_to_sql_infile( __method__, jobs_approved_this_period_sql )
   end
 
@@ -112,7 +117,7 @@ and t.NODEENTER_ between '#{@@period_start}' and '#{@@period_end}'"
     jobs_active_sql = "
 and t.END_ is NULL
 and t.NODE_ > 351
-and t.START_ >= '#{@@fiscal_start}'"
+and t.START_ >= '#{@@yearly_start}'"
     append_to_sql_infile( __method__, jobs_active_sql )
   end
 
@@ -123,7 +128,7 @@ and t.START_ >= '#{@@fiscal_start}'"
     jobs_killed_this_period_sql = "
 and n.NAME_ != 'Book Done'
 and t.END_ is not NULL
-and t.END_ between '#{@@period_start}' and '#{@@period_end}'"
+and t.END_ between '#{@@monthly_start}' and '#{@@monthly_end}'"
     append_to_sql_infile( __method__, jobs_killed_this_period_sql )
   end
   

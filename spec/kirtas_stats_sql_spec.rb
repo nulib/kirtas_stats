@@ -4,84 +4,57 @@ require_relative '../kirtas_stats_sql'
 class KirtasStatsSQL
 
   def jobs_started_this_year
-    yearly_start = GetDates::yearly_start_end.first
-    yearly_end   = GetDates::yearly_start_end.last
-
     @BASE_SQL <<
-    "and t.START_ between '#{ yearly_start }' and '#{ yearly_end }';"
+    "and t.START_ between '#{ @@yearly_start }' and '#{ @@yearly_end }';"
   end
 
   def jobs_started_this_quarter
-    quarterly_start = GetDates::quarterly_start_end.first
-    quarterly_end   = GetDates::quarterly_start_end.last
-
     @BASE_SQL <<
-    "and t.START_ between '#{ quarterly_start }' and '#{ quarterly_end }';"
+    "and t.START_ between '#{ @@quarterly_start }' and '#{ @@quarterly_end }';"
   end
 
   def jobs_started_this_month
-    monthly_start = GetDates::monthly_start_end.first
-    monthly_end   = GetDates::monthly_start_end.last
-
     @BASE_SQL <<
-    "and t.START_ between '#{ monthly_start }' and '#{ monthly_end }';"
+    "and t.START_ between '#{ @@monthly_start }' and '#{ @@monthly_end }';"
   end
 
   def jobs_done_this_year
-    yearly_start = GetDates::yearly_start_end.first
-    yearly_end   = GetDates::yearly_start_end.last
-
     @BASE_SQL <<
     "and n.NAME_ = 'Book Done' " <<
-    "and t.END_ between '#{ yearly_start }' and '#{ yearly_end }';"
+    "and t.END_ between '#{ @@yearly_start }' and '#{ @@yearly_end }';"
   end
 
   def jobs_done_this_quarter
-    quarterly_start = GetDates::quarterly_start_end.first
-    quarterly_end   = GetDates::quarterly_start_end.last
-
     @BASE_SQL <<
     "and n.NAME_ = 'Book Done' " <<
-    "and t.END_ between '#{ quarterly_start }' and '#{ quarterly_end }';"
+    "and t.END_ between '#{ @@quarterly_start }' and '#{ @@quarterly_end }';"
   end
 
   def jobs_done_this_month
-    monthly_start = GetDates::monthly_start_end.first
-    monthly_end   = GetDates::monthly_start_end.last
-
     @BASE_SQL <<
     "and n.NAME_ = 'Book Done' " <<
-    "and t.END_ between '#{ monthly_start }' and '#{ monthly_end }';"
+    "and t.END_ between '#{ @@monthly_start }' and '#{ @@monthly_end }';"
   end
 
   def jobs_killed_this_year
-    yearly_start = GetDates::yearly_start_end.first
-    yearly_end   = GetDates::yearly_start_end.last
-
     @BASE_SQL <<
     "and n.NAME_ != 'Book Done' " <<
     "and t.END_ is not NULL " <<
-    "and t.END_ between '#{ yearly_start }' and '#{ yearly_end }';"
+    "and t.END_ between '#{ @@yearly_start }' and '#{ @@yearly_end }';"
   end
 
   def jobs_killed_this_quarter
-    quarterly_start = GetDates::quarterly_start_end.first
-    quarterly_end   = GetDates::quarterly_start_end.last
-
     @BASE_SQL <<
     "and n.NAME_ != 'Book Done' " <<
     "and t.END_ is not NULL " <<
-    "and t.END_ between '#{ quarterly_start }' and '#{ quarterly_end }';"
+    "and t.END_ between '#{ @@quarterly_start }' and '#{ @@quarterly_end }';"
   end
 
   def jobs_killed_this_month
-    monthly_start = GetDates::monthly_start_end.first
-    monthly_end   = GetDates::monthly_start_end.last
-
     @BASE_SQL <<
     "and n.NAME_ != 'Book Done' " <<
     "and t.END_ is not NULL " <<
-    "and t.END_ between '#{ monthly_start }' and '#{ monthly_end }';"
+    "and t.END_ between '#{ @@monthly_start }' and '#{ @@monthly_end }';"
   end
 
 end
