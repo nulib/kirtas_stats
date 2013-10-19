@@ -85,17 +85,17 @@ and FIND_IN_SET( '#{project}', v.STRINGVALUE_ )"
   # Book start: anytime
   # Book approve: monthly
   def books_done_this_period
-    books_done_this_period_sql = "
-and n.NAME_ = 'Book Done'
-and t.END_ between '#{@@monthly_start}' and '#{@@monthly_end}'"
+    books_done_this_period_sql =
+      "and n.NAME_ = 'Book Done' " <<
+      "and t.END_ between '#{ @@monthly_start }' and '#{ @@monthly_end }' "
     append_to_sql_infile( __method__, books_done_this_period_sql )
   end
   
   # Find the jobs created between the beginning of the fiscal year and the end of the specified period
   # Job start: this month
   def jobs_created_this_fiscal_year
-    jobs_created_sql = "
-and t.START_ between '#{@@yearly_start}' and '#{@@monthly_end}'"
+    jobs_created_sql = 
+      "and t.START_ between '#{ @@yearly_start }' and '#{ @@monthly_end }' "
     append_to_sql_infile( __method__, jobs_created_sql )
   end
   
@@ -103,10 +103,10 @@ and t.START_ between '#{@@yearly_start}' and '#{@@monthly_end}'"
   # Job start: this year
   # Job to approve: current period
   def jobs_approved_this_period
-    jobs_approved_this_period_sql = "
-and n.NAME_ = 'Approve'
-and t.START_ >= '#{@@yearly_start}'
-and t.NODEENTER_ between '#{@@monthly_start}' and '#{@@monthly_end}'"
+    jobs_approved_this_period_sql = 
+      "and n.NAME_ = 'Approve' " <<
+      "and t.START_ >= '#{ @@yearly_start }' " <<
+      "and t.NODEENTER_ between '#{ @@monthly_start }' and '#{ @@monthly_end }' "
     append_to_sql_infile( __method__, jobs_approved_this_period_sql )
   end
 
@@ -114,10 +114,10 @@ and t.NODEENTER_ between '#{@@monthly_start}' and '#{@@monthly_end}'"
   # Job start: this year
   # Job end: null
   def jobs_active_this_fiscal_year
-    jobs_active_sql = "
-and t.END_ is NULL
-and t.NODE_ > 351
-and t.START_ >= '#{@@yearly_start}'"
+    jobs_active_sql = 
+      "and t.END_ is NULL " <<
+      "and t.NODE_ > 351 " <<
+      "and t.START_ >= '#{ @@yearly_start }' "
     append_to_sql_infile( __method__, jobs_active_sql )
   end
 
@@ -125,18 +125,18 @@ and t.START_ >= '#{@@yearly_start}'"
   # Job start: anytime
   # Killed: this period
   def jobs_killed_this_period
-    jobs_killed_this_period_sql = "
-and n.NAME_ != 'Book Done'
-and t.END_ is not NULL
-and t.END_ between '#{@@monthly_start}' and '#{@@monthly_end}'"
+    jobs_killed_this_period_sql = 
+      "and n.NAME_ != 'Book Done' " <<
+      "and t.END_ is not NULL " <<
+      "and t.END_ between '#{ @@monthly_start }' and '#{ @@monthly_end }' "
     append_to_sql_infile( __method__, jobs_killed_this_period_sql )
   end
   
   def status_stats_this_period
     @SELECT_STATUSES.each do |status|
-      status_sql = "
-and n.NAME_ = '#{status}'
-and t.END_ is NULL"
+      status_sql = 
+        "and n.NAME_ = '#{status}' " <<
+        "and t.END_ is NULL "
       append_to_sql_infile( "at_" + status.downcase.gsub( /\s/, '_' ), status_sql )
     end
   end
