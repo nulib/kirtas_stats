@@ -28,14 +28,14 @@ class KirtasStatsSQL
     @time_of_run = @@time_of_run
     @filename = "sql_input/sql-#{@time_of_run}.in"
 
-    @BASE_SQL = "
-SELECT count( * )
-FROM JBPM_TOKEN t
-LEFT JOIN JBPM_NODE n
-ON t.NODE_ = n.ID_
-LEFT JOIN JBPM_VARIABLEINSTANCE v
-ON t.ID_ = v.PROCESSINSTANCE_
-WHERE v.NAME_ = 'projects'"
+    @BASE_SQL =
+      "SELECT count( * ) " <<
+      "FROM JBPM_TOKEN t " <<
+      "LEFT JOIN JBPM_NODE n " <<
+      "ON t.NODE_ = n.ID_ " <<
+      "LEFT JOIN JBPM_VARIABLEINSTANCE v " <<
+      "ON t.ID_ = v.PROCESSINSTANCE_ " <<
+      "WHERE v.NAME_ = 'projects' "
     
     @PROJECT_SQL = project.nil? ? "" : "
 and FIND_IN_SET( '#{project}', v.STRINGVALUE_ )"
@@ -60,11 +60,11 @@ and FIND_IN_SET( '#{project}', v.STRINGVALUE_ )"
       "PDF Generation Script" ]
     
     unless @@fiscal_start && @@fiscal_end
-      @@fiscal_start, @@fiscal_end = GetDates::fiscal_start_end
+      @@fiscal_start, @@fiscal_end = GetDates::yearly_start_end
     end
 
     unless @@period_start && @@period_end
-      @@period_start, @@period_end = GetDates::period_start_end
+      @@period_start, @@period_end = GetDates::monthly_start_end
     end
   end
   
