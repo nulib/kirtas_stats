@@ -19,56 +19,56 @@ class GenerateStatsSQL
   end
 
   def jobs_started_this_year
-    @BASE_SQL <<
+    @BASE_SQL +
     "and t.START_ between '#{ @yearly_start }' and '#{ @yearly_end }';"
   end
 
   def jobs_started_this_quarter
-    @BASE_SQL <<
+    @BASE_SQL +
     "and t.START_ between '#{ @quarterly_start }' and '#{ @quarterly_end }';"
   end
 
   def jobs_started_this_month
-    @BASE_SQL <<
+    @BASE_SQL +
     "and t.START_ between '#{ @monthly_start }' and '#{ @monthly_end }';"
   end
 
   def jobs_done_this_year
-    @BASE_SQL <<
-    "and n.NAME_ = 'Book Done' " <<
+    @BASE_SQL +
+    "and n.NAME_ = 'Book Done' " +
     "and t.END_ between '#{ @yearly_start }' and '#{ @yearly_end }';"
   end
 
   def jobs_done_this_quarter
-    @BASE_SQL <<
-    "and n.NAME_ = 'Book Done' " <<
+    @BASE_SQL +
+    "and n.NAME_ = 'Book Done' " +
     "and t.END_ between '#{ @quarterly_start }' and '#{ @quarterly_end }';"
   end
 
   def jobs_done_this_month
-    @BASE_SQL <<
-    "and n.NAME_ = 'Book Done' " <<
+    @BASE_SQL +
+    "and n.NAME_ = 'Book Done' " +
     "and t.END_ between '#{ @monthly_start }' and '#{ @monthly_end }';"
   end
 
   def jobs_killed_this_year
-    @BASE_SQL <<
-    "and n.NAME_ != 'Book Done' " <<
-    "and t.END_ is not NULL " <<
+    @BASE_SQL +
+    "and n.NAME_ != 'Book Done' " +
+    "and t.END_ is not NULL " +
     "and t.END_ between '#{ @yearly_start }' and '#{ @yearly_end }';"
   end
 
   def jobs_killed_this_quarter
-    @BASE_SQL <<
-    "and n.NAME_ != 'Book Done' " <<
-    "and t.END_ is not NULL " <<
+    @BASE_SQL +
+    "and n.NAME_ != 'Book Done' " +
+    "and t.END_ is not NULL " +
     "and t.END_ between '#{ @quarterly_start }' and '#{ @quarterly_end }';"
   end
 
   def jobs_killed_this_month
-    @BASE_SQL <<
-    "and n.NAME_ != 'Book Done' " <<
-    "and t.END_ is not NULL " <<
+    @BASE_SQL +
+    "and n.NAME_ != 'Book Done' " +
+    "and t.END_ is not NULL " +
     "and t.END_ between '#{ @monthly_start }' and '#{ @monthly_end }';"
   end
 

@@ -171,4 +171,46 @@ describe GenerateStatsSQL do
     end
   end
 
+  it 'generates the same SQL after multiple calls' do
+
+    jobs_started_this_quarter_sql = 
+      "SELECT count( * ) " <<
+      "FROM JBPM_TOKEN t " <<
+      "LEFT JOIN JBPM_NODE n " <<
+      "ON t.NODE_ = n.ID_ " <<
+      "LEFT JOIN JBPM_VARIABLEINSTANCE v " <<
+      "ON t.ID_ = v.PROCESSINSTANCE_ " <<
+      "WHERE v.NAME_ = 'projects' " <<
+      "and t.START_ between '2013-09-01' and '2013-11-30';"
+  
+    k = GenerateStatsSQL.new
+    k.jobs_started_this_quarter
+    k.jobs_started_this_quarter
+    k.jobs_started_this_quarter
+    k.jobs_started_this_quarter
+    expect( k.jobs_started_this_quarter ).to eq( jobs_started_this_quarter_sql )
+
+  end
+
+  it 'generates the same SQL when called in different order' do
+
+    jobs_started_this_quarter_sql = 
+      "SELECT count( * ) " <<
+      "FROM JBPM_TOKEN t " <<
+      "LEFT JOIN JBPM_NODE n " <<
+      "ON t.NODE_ = n.ID_ " <<
+      "LEFT JOIN JBPM_VARIABLEINSTANCE v " <<
+      "ON t.ID_ = v.PROCESSINSTANCE_ " <<
+      "WHERE v.NAME_ = 'projects' " <<
+      "and t.START_ between '2013-09-01' and '2013-11-30';"
+  
+    k = GenerateStatsSQL.new
+    k.jobs_started_this_year
+    k.jobs_started_this_year
+    k.jobs_started_this_year
+    k.jobs_started_this_year
+    expect( k.jobs_started_this_quarter ).to eq( jobs_started_this_quarter_sql )
+
+  end
+
 end
