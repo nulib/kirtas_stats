@@ -1,3 +1,5 @@
+require_relative '../get_dates.rb'
+
 class GenerateStatsSQL
   include GetDates
 
@@ -71,9 +73,6 @@ class GenerateStatsSQL
   end
 
 end
-
-
-
 
 describe GenerateStatsSQL do
 
