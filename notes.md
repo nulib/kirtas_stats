@@ -1,3 +1,16 @@
+# Outline
+
+1. Generate SQL
+2. Write SQL
+3. Run SQL from infile
+4. Record results to outfile
+5. Parse results
+6. Generate SQL INSERT statements 
+7. Write SQL INSERT to file
+8. Run SQL INSERT from file
+
+
+
 mysql -h hostname -u username -p dbname < test_sql.in > test_sql.out
 
 mysql -h repository.library.northwestern.edu -u jbpmro -p jbpmdb -N < test_sql.in
