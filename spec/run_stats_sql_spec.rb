@@ -27,23 +27,21 @@ describe RunStatsSQL do
   it "runs the mysql client" do
     c = RunStatsSQL.new
     c.run_mysql_test
-    f = File.open( 'mysql_out' )
-    file_new = ( f.ctime < Time.now ) && ( f.ctime > Time.now - 60 )
-    f.close
-    File.delete( f )
+    file_exist = File.exist?( 'mysql_out' )
+    File.delete( 'mysql_out' )
 
-    expect( file_new ).to be_true
+    expect( file_exist ).to be_true
   end
 
   it "captures the output of the mysql client" do
     c = RunStatsSQL.new
     c.run_mysql_test
     f = File.open( 'mysql_out' )
-    file_exist = f.readlines.first.start_with?( "ERROR" )
+    file_contents = f.readlines.first.start_with?( "ERROR" )
     f.close
     File.delete( f )
 
-    expect( file_exist ).to be_true
+    expect( file_contents ).to be_true
   end
 
   it "connects to the MySQL database on Repository" do
