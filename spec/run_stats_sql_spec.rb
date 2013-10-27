@@ -4,7 +4,7 @@ class RunStatsSQL
   attr_reader :config
 
   def initialize
-    @config = YAML::load( File.open( 'config/database.yml' ) )[ "repository" ][ "development" ]
+    @config = YAML::load( File.open( 'config/database.yml' ) )[ "repository" ][ "production" ]
   end
 
   def run_mysql_test
