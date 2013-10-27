@@ -1,7 +1,7 @@
 # Outline
 
-1. Generate SQL
-2. Write SQL
+X 1. Generate SQL
+X 2. Write SQL
 3. Run SQL from infile
 4. Record results to outfile
 5. Parse results
@@ -43,3 +43,8 @@ update kirtas_stats
 set #{description} = #{count}
 where date = YYYY-MM-DD
 and project = XXX
+
+|               |          Year           |         Quarter         |          Month          |
+|      Day      | Started | Done | Killed | Started | Done | Killed | Started | Done | Killed |
+|:-------------:|:-------:|:----:|:------:|:-------:|:----:|:------:|:-------:|:----:|:------:|
+|  2013-10-22   |   132   |  77  |   43   |   132   |  77  |   43   |   65    |  72  |   26   |

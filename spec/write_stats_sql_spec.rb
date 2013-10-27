@@ -30,7 +30,7 @@ describe WriteStatsSQL do
   end
 
   it 'writes all the appropriate SQL to the file' do
-
+  
     jobs_started_this_year_sql = 
       "SELECT count( * ) " <<
       "FROM JBPM_TOKEN t " <<
