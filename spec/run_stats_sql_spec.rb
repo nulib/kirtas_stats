@@ -35,7 +35,7 @@ describe RunStatsSQL do
     c = RunStatsSQL.new
     c.run_mysql_test
     f = File.open( 'mysql_out' )
-    file_exist = f.readlines.first.start_with?( "ERROR 1045" )
+    file_exist = f.readlines.first.start_with?( "ERROR" )
     f.close
     File.delete( f )
 
