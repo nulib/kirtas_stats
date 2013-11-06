@@ -18,7 +18,6 @@ class RunStatsSQL
   def run_mysql( infile_name )
     outfile_name = infile_name.gsub( /^sql_input/, "sql_output" )
     outfile_name = outfile_name.gsub( /\.in$/, ".out" )
-    puts outfile_name
     `mysql -h #{ @config[ "host" ] } -u #{ @config[ "username" ] } -p#{ @config[ "password" ] } #{ @config[ "database" ] } < #{infile_name} > #{outfile_name}`
   end
 end
@@ -104,7 +103,7 @@ describe RunStatsSQL do
     expect( output ).to eql( sample_output )
   end
 
-  it "runs a specific SQL infile" do
+  it "runs a specific SQL infile and generates the expected output" do
 
     sample_output = []
     sample_output <<
@@ -132,39 +131,6 @@ describe RunStatsSQL do
     f = File.open( "sql_output/2013-11-06.out" )
     output = f.readlines.each { |line| line.chomp! }
     f.close
-
-    expect( output ).to eql( sample_output )
-  end
-
-  it "runs the SQL infile on Repository and generates the expected output" do
-    #pending
-    sample_output = []
-    sample_output <<
-      "count( * )" <<
-      "190" <<
-      "count( * )" <<
-      "149" <<
-      "count( * )" <<
-      "90" <<
-      "count( * )" <<
-      "190" <<
-      "count( * )" <<
-      "149" <<
-      "count( * )" <<
-      "90" <<
-      "count( * )" <<
-      "102" <<
-      "count( * )" <<
-      "113" <<
-      "count( * )" <<
-      "55"
-
-    c = RunStatsSQL.new
-    c.run_mysql
-    f = File.open( 'mysql_out' )
-    output = f.readlines.each { |line| line.chomp! }
-    f.close
-    File.delete( f )
 
     expect( output ).to eql( sample_output )
   end
