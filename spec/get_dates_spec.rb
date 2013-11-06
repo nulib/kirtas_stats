@@ -25,7 +25,7 @@ describe GetDates do
 
   it 'finds the beginning and end of the month' do
 
-    d = Date.new( 2013, 10, 16 )
+    d = Date.today
 
     m1 = Date.new( d.year, d.month, 1 )
     m2 = Date.new( d.year, d.month, -1 )
