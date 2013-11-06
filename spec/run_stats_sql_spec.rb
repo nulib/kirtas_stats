@@ -103,25 +103,25 @@ describe RunStatsSQL do
 
   it "runs the SQL infile on Repository and generates the expected output" do
 
-    sample_output = %w[
-      count( * )
-      190
-      count( * )
-      149
-      count( * )
-      90
-      count( * )
-      190
-      count( * )
-      149
-      count( * )
-      90
-      count( * )
-      102
-      count( * )
-      113
-      count( * )
-      55 ]
+    sample_output =
+      "count( * )" <<
+      "190" <<
+      "count( * )" <<
+      "149" <<
+      "count( * )" <<
+      "90" <<
+      "count( * )" <<
+      "190" <<
+      "count( * )" <<
+      "149" <<
+      "count( * )" <<
+      "90" <<
+      "count( * )" <<
+      "102" <<
+      "count( * )" <<
+      "113" <<
+      "count( * )" <<
+      "55"
 
     c = RunStatsSQL.new
     c.run_mysql
