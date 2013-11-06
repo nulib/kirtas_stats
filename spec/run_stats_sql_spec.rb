@@ -15,8 +15,9 @@ class RunStatsSQL
     `mysql -h #{ @config[ "host" ] } -u #{ @config[ "username" ] } -p#{ @config[ "password" ] } #{ @config[ "database" ] } -e "show tables;" >& mysql_out`
   end
 
-  def run_mysql
-    `mysql -h #{ @config[ "host" ] } -u #{ @config[ "username" ] } -p#{ @config[ "password" ] } #{ @config[ "database" ] } < sql_input/sql-2013-10-20.in > mysql_out`
+  def run_mysql( infile_name )
+    outfile_name = infile_name.gsub( /\.in$/, ".out" )
+    `mysql -h #{ @config[ "host" ] } -u #{ @config[ "username" ] } -p#{ @config[ "password" ] } #{ @config[ "database" ] } < #{infile_name} > #{outfile_name}`
   end
 end
 
@@ -113,7 +114,7 @@ describe RunStatsSQL do
   end
 
   it "runs the SQL infile on Repository and generates the expected output" do
-
+    #pending
     sample_output = []
     sample_output <<
       "count( * )" <<
