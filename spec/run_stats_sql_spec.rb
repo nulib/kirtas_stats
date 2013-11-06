@@ -96,4 +96,17 @@ describe RunStatsSQL do
 
     expect( output ).to eql( sample_output )
   end
+
+  it "runs the SQL infile on Repository and generates the expected output" do
+
+    c = RunStatsSQL.new
+    c.run_mysql
+    f = File.open( 'mysql_out' )
+    output = f.readlines.each { |line| line.chomp! }
+    f.close
+    File.delete( f )
+
+    expect( output ).to eql( sample_output )
+  end
+
 end
