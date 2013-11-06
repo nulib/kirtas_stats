@@ -106,6 +106,27 @@ describe RunStatsSQL do
 
   it "runs a specific SQL infile" do
 
+    sample_output = []
+    sample_output <<
+      "count( * )" <<
+      "192" <<
+      "count( * )" <<
+      "154" <<
+      "count( * )" <<
+      "90" <<
+      "count( * )" <<
+      "192" <<
+      "count( * )" <<
+      "154" <<
+      "count( * )" <<
+      "90" <<
+      "count( * )" <<
+      "18" <<
+      "count( * )" <<
+      "33" <<
+      "count( * )" <<
+      "13    " <<
+
     c = RunStatsSQL.new
     c.run_mysql( "sql_input/2013-11-06.in" )
     f = File.open( "sql_output/2013-11-06.out" )
