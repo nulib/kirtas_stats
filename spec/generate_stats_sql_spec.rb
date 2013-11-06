@@ -1,3 +1,4 @@
+require 'date'
 require_relative '../generate_stats_sql'
 
 describe GenerateStatsSQL do
