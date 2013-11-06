@@ -125,7 +125,7 @@ describe RunStatsSQL do
       "count( * )" <<
       "33" <<
       "count( * )" <<
-      "13    " <<
+      "13"
 
     c = RunStatsSQL.new
     c.run_mysql( "sql_input/2013-11-06.in" )
