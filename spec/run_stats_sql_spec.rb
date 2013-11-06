@@ -103,7 +103,8 @@ describe RunStatsSQL do
 
   it "runs the SQL infile on Repository and generates the expected output" do
 
-    sample_output =
+    sample_output = []
+    sample_output <<
       "count( * )" <<
       "190" <<
       "count( * )" <<
