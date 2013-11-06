@@ -14,6 +14,10 @@ class RunStatsSQL
   def run_mysql_test_connect
     `mysql -h #{ @config[ "host" ] } -u #{ @config[ "username" ] } -p#{ @config[ "password" ] } #{ @config[ "database" ] } -e "show tables;" >& mysql_out`
   end
+
+  def run_mysql
+    `mysql -h #{ @config[ "host" ] } -u #{ @config[ "username" ] } -p#{ @config[ "password" ] } #{ @config[ "database" ] } < sql_input/sql-2013-10-20.in > mysql_out`
+  end
 end
 
 describe RunStatsSQL do
