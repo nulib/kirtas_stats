@@ -18,6 +18,7 @@ class RunStatsSQL
   def run_mysql( infile_name )
     outfile_name = infile_name.gsub( /^sql_input/, "sql_output" )
     outfile_name = outfile_name.gsub( /\.in$/, ".out" )
+    puts outfile_name
     `mysql -h #{ @config[ "host" ] } -u #{ @config[ "username" ] } -p#{ @config[ "password" ] } #{ @config[ "database" ] } < #{infile_name} > #{outfile_name}`
   end
 end
