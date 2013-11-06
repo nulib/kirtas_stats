@@ -2,6 +2,11 @@ require_relative '../generate_stats_sql'
 
 describe GenerateStatsSQL do
 
+  today       = Date.today
+  month_start = Date.new( today.year, today.month, 1 )
+  month_end   = Date.new( today.year, today.month, -1 )
+
+
   context 'generates the SQL for jobs started ' do
 
     it 'in the current year' do
@@ -40,10 +45,6 @@ describe GenerateStatsSQL do
   
     it 'in the current month' do
       
-      today       = Date.today
-      month_start = Date.new( today.year, today.month, 1 )
-      month_end   = Date.new( today.year, today.month, -1 )
-
       jobs_started_this_month_sql = 
         "SELECT count( * ) " <<
         "FROM JBPM_TOKEN t " <<
@@ -98,7 +99,7 @@ describe GenerateStatsSQL do
     end
   
     it 'in the current month' do
-  
+
       jobs_done_this_month_sql = 
         "SELECT count( * ) " <<
         "FROM JBPM_TOKEN t " <<
@@ -108,7 +109,7 @@ describe GenerateStatsSQL do
         "ON t.ID_ = v.PROCESSINSTANCE_ " <<
         "WHERE v.NAME_ = 'projects' " <<
         "and n.NAME_ = 'Book Done' " <<
-        "and t.END_ between '2013-10-01' and '2013-10-31';"
+        "and t.END_ between '#{month_start}' and '#{month_end}';"
   
       k = GenerateStatsSQL.new
       expect( k.jobs_done_this_month ).to eq( jobs_done_this_month_sql )
@@ -167,7 +168,7 @@ describe GenerateStatsSQL do
         "WHERE v.NAME_ = 'projects' " <<
         "and n.NAME_ != 'Book Done' " <<
         "and t.END_ is not NULL " <<
-        "and t.END_ between '2013-10-01' and '2013-10-31';"
+        "and t.END_ between '#{month_start}' and '#{month_end}';"
   
       k = GenerateStatsSQL.new
       expect( k.jobs_killed_this_month ).to eq( jobs_killed_this_month_sql )
