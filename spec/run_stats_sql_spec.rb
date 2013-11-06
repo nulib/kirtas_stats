@@ -16,6 +16,7 @@ class RunStatsSQL
   end
 
   def run_mysql( infile_name )
+    outfile_name = infile_name.gsub( /^sql_input/, "sql_output" )
     outfile_name = infile_name.gsub( /\.in$/, ".out" )
     `mysql -h #{ @config[ "host" ] } -u #{ @config[ "username" ] } -p#{ @config[ "password" ] } #{ @config[ "database" ] } < #{infile_name} > #{outfile_name}`
   end
@@ -105,8 +106,8 @@ describe RunStatsSQL do
   it "runs a specific SQL infile" do
 
     c = RunStatsSQL.new
-    c.run_mysql( "2013-11-06.in" )
-    f = File.open( "2013-11-06.out" )
+    c.run_mysql( "sql_input/2013-11-06.in" )
+    f = File.open( "sql_output/2013-11-06.out" )
     output = f.readlines.each { |line| line.chomp! }
     f.close
 
