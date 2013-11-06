@@ -101,6 +101,17 @@ describe RunStatsSQL do
     expect( output ).to eql( sample_output )
   end
 
+  it "runs a specific SQL infile" do
+
+    c = RunStatsSQL.new
+    c.run_mysql( "2013-11-06.in" )
+    f = File.open( "2013-11-06.out" )
+    output = f.readlines.each { |line| line.chomp! }
+    f.close
+
+    expect( output ).to eql( sample_output )
+  end
+
   it "runs the SQL infile on Repository and generates the expected output" do
 
     sample_output = []
