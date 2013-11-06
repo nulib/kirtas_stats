@@ -39,7 +39,11 @@ describe GenerateStatsSQL do
     end
   
     it 'in the current month' do
-  
+      
+      today       = Date.new
+      month_start = Date.new( today.year, today.month, 1 )
+      month_end   = Date.new( today.year, today.month, -1 )
+
       jobs_started_this_month_sql = 
         "SELECT count( * ) " <<
         "FROM JBPM_TOKEN t " <<
@@ -48,7 +52,7 @@ describe GenerateStatsSQL do
         "LEFT JOIN JBPM_VARIABLEINSTANCE v " <<
         "ON t.ID_ = v.PROCESSINSTANCE_ " <<
         "WHERE v.NAME_ = 'projects' " <<
-        "and t.START_ between '2013-10-01' and '2013-10-31';"
+        "and t.START_ between '#{month_start}' and '#{month_end}';"
   
       k = GenerateStatsSQL.new
       expect( k.jobs_started_this_month ).to eq( jobs_started_this_month_sql )
