@@ -1,4 +1,3 @@
-require 'date'
 require_relative '../generate_stats_sql'
 
 describe GenerateStatsSQL do
@@ -41,7 +40,7 @@ describe GenerateStatsSQL do
   
     it 'in the current month' do
       
-      today       = Date.new
+      today       = Date.today
       month_start = Date.new( today.year, today.month, 1 )
       month_end   = Date.new( today.year, today.month, -1 )
 
