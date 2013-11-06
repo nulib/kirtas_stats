@@ -3,9 +3,11 @@ require_relative '../generate_stats_sql.rb'
 class WriteStatsSQL
 
   def write_file
+    today = Date.today
+
     k = GenerateStatsSQL.new
 
-    f = File.open( 'sql_input/sql-2013-10-20.in', 'w' ) { |f|
+    f = File.open( "sql_input/#{today}.in", 'w' ) { |f|
       f.puts( k.jobs_started_this_year )
       f.puts( k.jobs_done_this_year )
       f.puts( k.jobs_killed_this_year )
@@ -22,11 +24,13 @@ end
 
 describe WriteStatsSQL do
 
-  it 'writes a file' do
+  it 'writes a file for today' do
+    today = Date.today
+
     w = WriteStatsSQL.new
     w.write_file
 
-    expect( f = File.open( 'sql_input/sql-2013-10-20.in' ) ).to_not be_nil
+    expect( f = File.open( "sql_input/#{today}.in" ) ).to_not be_nil
   end
 
   it 'writes all the appropriate SQL to the file' do
