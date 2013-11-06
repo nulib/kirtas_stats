@@ -101,7 +101,7 @@ describe WriteStatsSQL do
       "ON t.ID_ = v.PROCESSINSTANCE_ " <<
       "WHERE v.NAME_ = 'projects' " <<
       "and n.NAME_ = 'Book Done' " <<
-      "and t.END_ between 'month_start' and 'month_end';"
+      "and t.END_ between '#{month_start}' and '#{month_end}';"
 
 
     jobs_killed_this_year_sql = 
